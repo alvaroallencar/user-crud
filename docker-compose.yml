@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  user-crud:
+    container_name: user-crud
+    image: user-crud:1.0.0
+    build: .
+    ports:
+      - "3333:3333"
+    environment:
+      - PORT=3333
+      - DB_HOST=db
+      - DB_USER=alvaro
+      - DB_PASSWORD=12345
+      - DB_NAME=user-crud-db
+      - DB_PORT=5432
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=alvaro
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=user-crud-db
+    volumes:
+      - user-crud:/var/lib/postgresql
+
+volumes:
+  user-crud:
